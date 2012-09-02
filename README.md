@@ -1,4 +1,5 @@
-cns3060-shadownx
-================
+John Archer
+============
 
-This is the private repository for shadownx for 3060
+CS-3060 Section 601
+archer.john@gmail.com

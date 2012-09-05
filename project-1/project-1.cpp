@@ -13,35 +13,23 @@ I understand that copying any source code, in whole or part, constitutes cheatin
 
 int main ( int argc, char* argv[ ] )
 {
-	printf ("John Archer/n");
-	printf ("CS3060 Section 601/n");
+	printf ("John Archer\n");
+	printf ("CNS 3060 Section 601\n\n");
 	int n = 0;
 	while ( n < argc )
 	{
 		// Checks to see if this is the first time through the loop
 		if ( n == 0)
 		{
+			printf( "%s\n", argv[ n + 1 ] );  // Done to get past the first argv string ./project-1
+			n++;  // Increments to the 3rd element.  Needs to be done so that the second string is not repeated. 
+		}
+		// Continues through the loop until all elements in argv array have been processed.
+		else 
+		{ 
 			printf( "%s\n", argv[n] );
 		}
-
-		// Compares first element in the next char array to see if it a '-'
-		else if ( argv[n][0] ==  '-' )
-		{ 
-			// Compares the second element to see if it is upper case or a digit.
-			if (( isupper( argv[n][1] ) == 1) || ( isdigit( argv[n][1] ) == 1 ))
-			{
-				printf( "%s\ ", argv[n] );
-				printf( "(invalid option)\n" );
-			}
-			// Compares the second element is a valid lower case letter
-			if  ( islower( argv[n][1] ) == 1 )
-			{
-				printf( "%s\n", argv[n] );
-			}
-		}
-		
 		n++;
 	}
 	return 0;
-
 }

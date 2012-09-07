@@ -18,17 +18,8 @@ int main ( int argc, char* argv[ ] )
 	int n = 0;
 	while ( n < argc )
 	{
-		// Checks to see if this is the first time through the loop
-		if ( n == 0)
-		{
-			printf( "%s\n", argv[ n + 1 ] );  // Done to get past the first argv string ./project-1
-			n++;  // Increments to the 3rd element.  Needs to be done so that the second string is not repeated. 
-		}
-		// Continues through the loop until all elements in argv array have been processed.
-		else 
-		{ 
-			printf( "%s\n", argv[n] );
-		}
+		// Goes through the loop until all elements in argv array have been processed.
+		printf( "%s\n", argv[n] );
 		n++;
 	}
 	return 0;

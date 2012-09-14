@@ -8,3 +8,7 @@ It took a little bit to remember to include the ( int argc, char* argv[] ) into 
 to get the arguments being passed into the program from the command line or Makefile to be accessable  
 for output or print statements.
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0568bbfcf71586e6425efd18bc8956d15ebe4ded

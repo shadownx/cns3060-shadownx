@@ -15,6 +15,7 @@ int main ( int argc, char* argv[ ] )
 {
 	printf ("John Archer\n");
 	printf ("CNS 3060 Section 601\n\n");
+<<<<<<< HEAD
 	int n = 0;
 	while ( n < argc )
 	{
@@ -24,3 +25,14 @@ int main ( int argc, char* argv[ ] )
 	}
 	return 0;  
 }
+=======
+	int n = 1;
+	while ( n < argc )
+	{
+		// Goes through the loop until all elements in argv array have been processed.
+		printf( "%s\n", argv[n] );
+		n++;
+	}
+	return 0;
+}
+>>>>>>> 0568bbfcf71586e6425efd18bc8956d15ebe4ded

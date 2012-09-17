@@ -52,42 +52,27 @@ int main ( int argc, char* argv[] )
 			{
 				// Checks to make sure the file is valid
 				if ((  fp = fopen( argv[ count + 1 ], "r" )) == NULL )
-				{
 					printf( "%s: %s: No such file or directory\n", argv[0], argv[ count +1 ] );
-					fclose(fp);
-					//break;
-				}
 				else 
-				{
 					linenum = readfile( fp, 1, linenum );
-					fclose(fp);
-					break;
-				}	
+				
+				fclose(fp);
 			}
-			// Check to see if the second option or more provided is a file name.
-			//else
-			//{
-				//// Checks to make sure the file is valid
-				//if ((  fp = fopen( argv[count - 1], "r" )) == NULL )
-				//{
-					//printf( "%s: %s: No such file or directory\n", argv[0], argv[ count +1 ] );
-					//fclose(fp);
-					//break;
-				//}
-				//else 
-				//{
-						//linenum = readfile( fp, 1, linenum );
-						//fclose(fp);
-						//break;
-				//}			
-			}
+		}
+		// Check to see if the second option or more provided are files.
+		else
+		{
+			// Checks to make sure the file is valid
+			if ((  fp = fopen( argv[count - 1], "r" )) == NULL )
+				printf( "%s: %s: No such file or directory\n", argv[0], argv[ count +1 ] );
+			else 
+				linenum = readfile( fp, 1, linenum );
+			fclose(fp);				
+		}
 		count++;
-		//fclose(fp);
-		//}
 	}
 	return(0);
 }
-
 
 // Reads the file and outputs to stdout, returns error if file is corrupted
 int readfile( FILE *fp, int numbering, int lines )

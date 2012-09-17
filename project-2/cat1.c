@@ -8,102 +8,104 @@ I declare that the following source code was written solely by me.  I understand
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define linelen 1024 //max length of line
 
-int readfile( FILE *fp, int numbering )
-{
-
-	int linenumbere1;
-	char *error;
-	char lineR[linelen];
-
-	while (error = fgets( lineR, linelen, fp ))
-	{
-		if ( error == NULL )
-			return(1);
-		if ( numbering == 1 )
-		{
-			printf( "\t%i ", linenumR );
-			linenumR++;
-		}
-		if ( fputs( lineR, stdout ) == EOF )
-			exit(1);
-	}
-return(0);
-}
+// Declearing functions
+int readfile( FILE *fp, int numbering, int lines );
 
 int main ( int argc, char* argv[] )
 {
 	// Variable initialization.
-	int lnum = 2;
 	int linenum = 1;
 	int count = 1;
 	FILE *fp;
 	char *cuse = "usage: cat [-n] [file ...]";
-	int readF = 0;
 	char line[linelen];
 	char *option = "-n";
-
+	
 	// No other options specified with the command.
 	if ( argc == 1 )
 	{
 		while( fgets( line, linelen, stdin ))
 			printf( "%s", line );
 	}
-	else
+	// Gives error if any other option is specified with the '-'
+	else if ( strcmp ( argv[1], option ) != 0 )
 	{
-		while( count < argc )
-		{ 
+		printf( "%s: illegal option -%s\n%s\n", argv[0], argv[1], cuse );
+		exit(1);
+	}
+	// 
+	while( count < argc )
+	{ 
 		// Checks to see if -n or an illegal option has been entered but not a file name		
-			if ( argv[1][0] == '-' )
+		if ( strcmp( argv[1], option ) == 0 )
+		{
+			// Prints input from stdin or file out to screen with line numbers
+			if ( ( argc == 2 ) || ( argv[ count + 1 ][0] == '-' ))
 			{
-				if ( argv[1][1] == 'n' )
-				{ 
-				// Prints input from stdin or file out to screen with line numbers
-					if ( argc == 2 )
-					{
-						while( fgets( line, linelen, stdin ))
-							printf( "\t%i %s", linenum++, line );
-					}
-					else
-					{
-						// Checks to make sure the file is valid
-						if ((  fp = fopen( argv[lnum], "r" )) != NULL )
-						{
-							readF = readfile( fp, 1 );
-							if ( readF == 1 )
-								printf( "Error reading file.\n" );
-							break;
-						}
-						else 
-							printf( "%s: %s: No such file\n", argv[0], argv[lnum] );
-					}
-				}
-				// Gives error if any other option is specified with the '-'
-				else if ( argv[1][1] != 'n' )
-					printf( "%s: illegal option -%s\n%s\n", argv[0], argv[1], cuse );
-			linenum = 1;
+				while( fgets( line, linelen, stdin ))
+					printf( "\t%i %s", linenum++, line );
 			}
-			// Check to see if the second option or more provided is a file name.
 			else
 			{
-				// Checks to make file name is valid
-				if ( ( fp = fopen( argv[count], "r" )) != NULL )
-				{	
-				// Prints out contents of file
-					readF = readfile( fp, 0 );
-					if ( readF == 1 )
-						printf( "Error reading file.\n" );
-					break;
+				// Checks to make sure the file is valid
+				if ((  fp = fopen( argv[ count + 1 ], "r" )) == NULL )
+				{
+					printf( "%s: %s: No such file or directory\n", argv[0], argv[ count +1 ] );
+					fclose(fp);
+					//break;
 				}
-				else
-					printf( "%s: %s: No such file\n", argv[0], argv[count] );				
+				else 
+				{
+					linenum = readfile( fp, 1, linenum );
+					fclose(fp);
+					break;
+				}	
+			}
+			// Check to see if the second option or more provided is a file name.
+			//else
+			//{
+				//// Checks to make sure the file is valid
+				//if ((  fp = fopen( argv[count - 1], "r" )) == NULL )
+				//{
+					//printf( "%s: %s: No such file or directory\n", argv[0], argv[ count +1 ] );
+					//fclose(fp);
+					//break;
+				//}
+				//else 
+				//{
+						//linenum = readfile( fp, 1, linenum );
+						//fclose(fp);
+						//break;
+				//}			
 			}
 		count++;
-		lnum++;
-		fclose(fp);
-		}
-	}
+		//fclose(fp);
+		//}
+	//}
 	return(0);
 }
 
+
+// Reads the file and outputs to stdout, returns error if file is corrupted
+int readfile( FILE *fp, int numbering, int lines )
+{
+	char *error;
+	char lineR[linelen];
+
+	while ( fgets( lineR, linelen, fp ) == 's')
+	{
+		if ( error == NULL )
+			perror( "File is not valid.");
+		if ( numbering == 1 )
+		{
+			printf( "\t%i ", lines );
+			lines++;
+		}
+		if ( fputs( lineR, stdout ) == EOF )
+			exit(1);
+	}
+return(lines);
+}

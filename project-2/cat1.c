@@ -18,7 +18,7 @@ int main ( int argc, char* argv[] )
 {
 	// Variable initialization.
 	int linenum = 1;
-	int count = 1;
+	int count = 2;
 	FILE *fp;
 	char *cuse = "usage: cat [-n] [file ...]";
 	char line[linelen];
@@ -31,31 +31,30 @@ int main ( int argc, char* argv[] )
 			printf( "%s", line );
 	}
 	// Gives error if any other option is specified with the '-'
-	else if ( strcmp ( argv[1], option ) != 0 )
+	if ( (strcmp ( argv[1], option ) != 0) && ( argv[1][0] == '-' ))
 	{
 		printf( "%s: illegal option -%s\n%s\n", argv[0], argv[1], cuse );
 		exit(1);
 	}
 	// Goes through the loop until there is no more arguments to be processed.
-	while( count < argc )
+	while( count <= argc )
 	{ 
-		// Checks to see if -n or an illegal option has been entered but not a file name		
+		// Checks to see if -n has been used to print put line numbers		
 		if ( strcmp( argv[1], option ) == 0 )
 		{
 			// Prints input from stdin or file out to screen with line numbers
-			if ( ( argc == 2 ) || ( argv[ count + 1 ][0] == '-' ))
+			if ( argc == 2 )
 			{
 				while( fgets( line, linelen, stdin ))
 					printf( "\t%i %s", linenum++, line );
 			}
-			else
+			if ( argv[count] != NULL)
 			{
 				// Checks to make sure the file is valid
-				if ((  fp = fopen( argv[ count + 1 ], "r" )) == NULL )
+				if ((  fp = fopen( argv[count], "r" )) == NULL )
 					printf( "%s: %s: No such file or directory\n", argv[0], argv[ count +1 ] );
 				else 
 					linenum = readfile( fp, 1, linenum );
-				
 				fclose(fp);
 			}
 		}
@@ -63,10 +62,10 @@ int main ( int argc, char* argv[] )
 		else
 		{
 			// Checks to make sure the file is valid
-			if ((  fp = fopen( argv[count - 1], "r" )) == NULL )
+			if ((  fp = fopen( argv[ count - 1 ], "r" )) == NULL )
 				printf( "%s: %s: No such file or directory\n", argv[0], argv[ count +1 ] );
 			else 
-				linenum = readfile( fp, 1, linenum );
+				linenum = readfile( fp, 0, linenum );
 			fclose(fp);				
 		}
 		count++;

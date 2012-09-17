@@ -36,7 +36,7 @@ int main ( int argc, char* argv[] )
 		printf( "%s: illegal option -%s\n%s\n", argv[0], argv[1], cuse );
 		exit(1);
 	}
-	// 
+	// Goes through the loop until there is no more arguments to be processed.
 	while( count < argc )
 	{ 
 		// Checks to see if -n or an illegal option has been entered but not a file name		
@@ -84,7 +84,7 @@ int main ( int argc, char* argv[] )
 		count++;
 		//fclose(fp);
 		//}
-	//}
+	}
 	return(0);
 }
 
@@ -92,20 +92,25 @@ int main ( int argc, char* argv[] )
 // Reads the file and outputs to stdout, returns error if file is corrupted
 int readfile( FILE *fp, int numbering, int lines )
 {
-	char *error;
 	char lineR[linelen];
-
-	while ( fgets( lineR, linelen, fp ) == 's')
+	// Clears the file stream error flags
+	clearerr(fp);
+	 
+	while ( fgets( lineR, linelen, fp ) != NULL )
 	{
-		if ( error == NULL )
+		if ( ferror(fp) != 0 )
+		{
 			perror( "File is not valid.");
+			break;
+		}
 		if ( numbering == 1 )
 		{
 			printf( "\t%i ", lines );
 			lines++;
 		}
-		if ( fputs( lineR, stdout ) == EOF )
+		if ( feof(fp) == EOF )
 			exit(1);
+		fputs( lineR, stdout);
 	}
 return(lines);
 }

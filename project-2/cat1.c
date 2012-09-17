@@ -48,7 +48,7 @@ int main ( int argc, char* argv[] )
 				while( fgets( line, linelen, stdin ))
 					printf( "\t%i %s", linenum++, line );
 			}
-			if ( argv[count] != NULL)
+			if ( argv[count] != NULL)  // To make sure that when string stored in argv[count] is equal to NULL, that an attempt is not made to open NULL.
 			{
 				// Checks to make sure the file is valid
 				if ((  fp = fopen( argv[count], "r" )) == NULL )
@@ -79,10 +79,10 @@ int readfile( FILE *fp, int numbering, int lines )
 	char lineR[linelen];
 	// Clears the file stream error flags
 	clearerr(fp);
-	 
+	// Sends file to stdout and checks for errors while the process is done. 
 	while ( fgets( lineR, linelen, fp ) != NULL )
 	{
-		if ( ferror(fp) != 0 )
+		if ( ferror(fp) != 0 )  //Checks to see if there was an error reading the file, is so, sends error message to screen.
 		{
 			perror( "File is not valid.");
 			break;
@@ -92,7 +92,7 @@ int readfile( FILE *fp, int numbering, int lines )
 			printf( "\t%i ", lines );
 			lines++;
 		}
-		if ( feof(fp) == EOF )
+		if ( feof(fp) == EOF )  // Checks for the EOF flag.
 			exit(1);
 		fputs( lineR, stdout);
 	}

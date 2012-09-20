@@ -9,7 +9,8 @@ I declare that the following source code was written solely by me.  I understand
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define linelen 1024 //max length of line
+//max length of line
+#define linelen 1024 
 
 // Declearing functions
 int readfile( FILE *fp, int numbering, int lines );
@@ -18,7 +19,7 @@ int main ( int argc, char* argv[] )
 {
 	// Variable initialization.
 	int linenum = 1;
-	int count = 2;
+	int count = 1;
 	FILE *fp;
 	char *cuse = "usage: cat [-n] [file ...]";
 	char line[linelen];
@@ -48,14 +49,17 @@ int main ( int argc, char* argv[] )
 				while( fgets( line, linelen, stdin ))
 					printf( "\t%i %s", linenum++, line );
 			}
-			if ( argv[count] != NULL)  // To make sure that when string stored in argv[count] is equal to NULL, that an attempt is not made to open NULL.
+			// To make sure that the string stored in argv[count] is not equal to NULL to prevent the attempt to open as a file.
+			if ( argv[count] != NULL)
 			{
 				// Checks to make sure the file is valid
 				if ((  fp = fopen( argv[count], "r" )) == NULL )
-					printf( "%s: %s: No such file or directory\n", argv[0], argv[ count +1 ] );
+					printf( "%s: %s: No such file or directory\n", argv[0], argv[count] );
 				else 
+				{
 					linenum = readfile( fp, 1, linenum );
-				fclose(fp);
+					fclose(fp);
+				}
 			}
 		}
 		// Check to see if the second option or more provided are files.
@@ -63,15 +67,18 @@ int main ( int argc, char* argv[] )
 		{
 			// Checks to make sure the file is valid
 			if ((  fp = fopen( argv[ count - 1 ], "r" )) == NULL )
-				printf( "%s: %s: No such file or directory\n", argv[0], argv[ count +1 ] );
+				printf( "%s: %s: No such file or directory\n", argv[0], argv[ count - 1 ] );
 			else 
+			{
 				linenum = readfile( fp, 0, linenum );
-			fclose(fp);				
+				fclose(fp);
+			}				
 		}
 		count++;
 	}
 	return(0);
 }
+
 
 // Reads the file and outputs to stdout, returns error if file is corrupted
 int readfile( FILE *fp, int numbering, int lines )
@@ -79,10 +86,11 @@ int readfile( FILE *fp, int numbering, int lines )
 	char lineR[linelen];
 	// Clears the file stream error flags
 	clearerr(fp);
-	// Sends file to stdout and checks for errors while the process is done. 
+	// Send file to stdout while reading the file, as well as checking to see if errors have occured. 
 	while ( fgets( lineR, linelen, fp ) != NULL )
 	{
-		if ( ferror(fp) != 0 )  //Checks to see if there was an error reading the file, is so, sends error message to screen.
+		// Checks to see if there was an error reading the file, if so, send error message to output.
+		if ( ferror(fp) != 0 )	
 		{
 			perror( "File is not valid.");
 			break;
@@ -92,7 +100,8 @@ int readfile( FILE *fp, int numbering, int lines )
 			printf( "\t%i ", lines );
 			lines++;
 		}
-		if ( feof(fp) == EOF )  // Checks for the EOF flag.
+		// Checkes for the EOF flag.
+		if ( feof(fp) == EOF )  
 			exit(1);
 		fputs( lineR, stdout);
 	}

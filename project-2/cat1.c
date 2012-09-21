@@ -47,8 +47,11 @@ int main ( int argc, char* argv[] )
 			if ( argc == 2 )
 			{
 				while( fgets( line, linelen, stdin ))
-					printf( "\t%i %s", linenum++, line );
+					printf( "%6i %s", linenum++, line );
 			}
+			// Adjust counter to jump over the "-n" option
+			if ( count == 1 )
+				count++;
 			// To make sure that the string stored in argv[count] is not equal to NULL to prevent the attempt to open as a file.
 			if ( argv[count] != NULL)
 			{
@@ -66,8 +69,8 @@ int main ( int argc, char* argv[] )
 		else
 		{
 			// Checks to make sure the file is valid
-			if ((  fp = fopen( argv[ count - 1 ], "r" )) == NULL )
-				printf( "%s: %s: No such file or directory\n", argv[0], argv[ count - 1 ] );
+			if ((  fp = fopen( argv[count], "r" )) == NULL )
+				printf( "%s: %s: No such file or directory\n", argv[0], argv[count] );
 			else 
 			{
 				linenum = readfile( fp, 0, linenum );
@@ -97,7 +100,7 @@ int readfile( FILE *fp, int numbering, int lines )
 		}
 		if ( numbering == 1 )
 		{
-			printf( "\t%i ", lines );
+			printf( "%6i ", lines );
 			lines++;
 		}
 		// Checkes for the EOF flag.

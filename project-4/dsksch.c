@@ -1,4 +1,4 @@
-/*
+/*/*
 Name: John Archer
 Class: CS3060
 Section: 601
@@ -13,21 +13,21 @@ I declare that the following source code was writen solely by me.  I understand 
 
 // Function declarations
 void firstCome( int tracks[] );
-void shortest( int sTracks[]  );
-void elevator( int tracks[] );
+void shortest( int tracks[] );
+void elevator( int tracks[]);
+void eSort( int eTrack[] );
 
 int main ( int argc,  char *argv[] )
 {
 	int tracks[] = { 18, 4, 40, 11, 35, 7, 14, 21, 32, 41 };
-	int *trackPtr;
-	int sTracks[10];
-	
-	
+	int initTrack = 15;
+	int prevTrack = 12;
+
 	// Calls sort methods
 	firstCome(tracks);  
 	shortest(tracks);
 	elevator(tracks);
-	
+	system("pause");
 	return(0);
 }
 
@@ -61,7 +61,7 @@ void firstCome ( int tracks[] )
 void shortest ( int tracks[] )
 {
 	// Varible declaration
-	int current, last, diff, change, temp;;
+	int current, last, diff, change, temp;
 	int count = 0;
 	int scount = 0;
 	long total = 0;
@@ -138,86 +138,87 @@ void shortest ( int tracks[] )
 void elevator ( int tracks[] )
 {
 	// Variable declaration
-	int current, last, diff, temp, change, i;
 	int count = 0;
-	int scount = 0;
-	int lastT = 49;
 	int eTrack[10];
-	int top = 0;
 	long total = 0;
-	// upDown is 0 if tracks are incrementing and 1 if decremanting
-	int upDown = 0;
-	int countf = 0;
-	int eDiff = 0;
-	int tDiff = 0;
-	int cDiff = 0;
+	int last, diff;
 	
-	// Copies Array
 	while ( count < 10 )
 	{
 		eTrack[count] = tracks[count];
 		count++;
 	}
 	count = 0;
+	
+	eSort (eTrack);
 
 	printf( "\nElevator Seek\n" );
 	last = start;
 	printf( "Head Movement\t\t\tTracks Traversed\n" );
 	
-	while ( count < 10 )
-	{
-		cDiff = eTrack[count] - last;
-		while ( scount < 10 )
-		{ 	
-			change = 0;
-			// Check difference between next element and last track.
-			eDiff = eTrack[scount]- last;
-			
-			// Keeps track of the lowesst amount of change until the swap is made
-			if ( eDiff < tDiff )
-			{
-				tDiff = eDiff;
-			}
-			else
-			{
-				tDiff = eTrack[count] - last;
-			}
-			// Swaps track order to keep the amount of changes to a minimum.
-			if (( eDiff <= cDiff ) && ( eDiff >= tDiff ) && ( eDiff > 0 ) && ( cDiff > 0 ))
-			{
-				if ( count != scount )
-				{
-					temp = eTrack[count];
-					eTrack[count] = eTrack[scount];
-					eTrack[scount] = temp;
-					current =  eTrack[count];
-					change = 1;
-					break;
-				}
-			}
-			scount++;
-		}
-		// No change has occurred
-		if ( change == 0 )
-		{
-			current = eTrack[count];
-			diff = current - last;
-			printf( "Tracks %i-%i\t\t\t%i\n", last, current, abs(diff) );
-			last = current;
-			total = total + abs( diff );
-			count++;
-		}
-		scount = count;
-		if ( change == 1 )
-			count = 0;
-	}
-	printf( "Total Tacks Traversed\t\t%ld\n\n", total );
-	
 	count = 0;
-	while ( count < 10 )
+	diff = eTrack[0] - start;
+	diff = abs(diff);
+
+	printf( "Tracks 15-%i\t\t\t%i\n", eTrack[count], diff );
+	while ( count < 9 )
 	{
-		printf( "eTrack[%i]\t%i\n", count, eTrack[count] );
-		count++;
-	}	
+		if (( eTrack[count] > 15 ) && (eTrack[count+1] > 15 ))
+		{
+			diff = eTrack[count+1] - eTrack[count];
+			diff = abs(diff);
+			printf( "Tracks %i-%i\t\t\t%i\n",eTrack[count], eTrack[count+1], diff );
+		}
+		else if (( eTrack[count] > 15 ) && ( eTrack[count+1] < 15 ))
+		{
+			last = 44 - eTrack[count];
+			diff = 44 - eTrack[count+1];
+			diff = abs(diff);
+			diff = diff +last;
+			printf( "Tracks %i-%i\t\t\t%i\n",eTrack[count], eTrack[count+1], diff );
+		}
+		else if ( eTrack[count] < 15 )
+		{
+			diff = eTrack[count+1] - eTrack[count];
+			diff = abs(diff);
+			printf( "Tracks %i-%i\t\t\t%i\n",eTrack[count], eTrack[count+1], diff );
+		}
+		total = total + diff;
+		count = count + 1;
+	}
+
+	printf( "Total Tracks Traversed\t\t%li\n\n", total );
+}
+
+// Sorts array into elevator seek pattern
+void eSort ( int eTrack[] )
+{
+	int change, temp, j, i;
+
+	for ( i = 0; i<10; i++ )
+	{
+		for ( j = 0; j<9; j++ )
+		{
+			if (( eTrack[j] > eTrack[j+1] ) && ( eTrack[j+1] > 15 ))
+			{
+				temp = eTrack[j+1];
+				eTrack[j+1] = eTrack[j];
+				eTrack[j] = temp;
+			}
+			else if (( eTrack[j] < 15 ) && (eTrack[j+1] > 15 ))
+			{
+				temp = eTrack[j+1];
+				eTrack[j+1] = eTrack[j];
+				eTrack[j] = temp;
+			}
+			else if (( eTrack[j] < eTrack[j+1] ) && ( eTrack[j] < 15 ))
+			{
+				temp = eTrack[j+1];
+				eTrack[j+1] = eTrack[j];
+				eTrack[j] = temp;
+			}
+
+		}
+	}
 }
 
